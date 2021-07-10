@@ -5,7 +5,14 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 import { CoreEntity } from 'src/common/entities/core.entity';
-import { BeforeInsert, Column, Entity } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { InternalServerErrorException } from '@nestjs/common';
 import { IsEmail, IsEnum } from 'class-validator';
@@ -22,6 +29,18 @@ registerEnumType(UserRole, { name: 'UserRole' });
 @ObjectType()
 @Entity()
 export class User extends CoreEntity {
+  @PrimaryGeneratedColumn()
+  @Field((type) => Number)
+  id: number;
+
+  @CreateDateColumn()
+  @Field((type) => Date)
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  @Field((type) => Date)
+  updatedAt: Date;
+
   @Column()
   @Field((type) => String)
   @IsEmail()

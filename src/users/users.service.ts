@@ -6,6 +6,7 @@ import { CreateAccountInput } from './dtos/create-account.dto';
 import { LoginInput } from './dtos/login.dto';
 import { User } from './entities/user.entity';
 import { JwtService } from 'src/jwt/jwt.service';
+import { UpdateProfileIntput } from './dtos/update-profile.dto';
 
 @Injectable()
 export class UsersService {
@@ -73,4 +74,14 @@ export class UsersService {
   async findById(id: number): Promise<User> {
     return this.users.findOne({ id });
   }
+
+  async updateProfile(
+    userId: number,
+    { email, password }: UpdateProfileIntput,
+  ) {
+    this.users.update(userId, { email, password });
+  }
 }
+
+// type orm은 많은걸 보낼수있다.
+// graphql input으로 받아왔으면 update를 쓰지 않는다.

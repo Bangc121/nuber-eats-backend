@@ -7,6 +7,10 @@ import {
   CreateAccountOutput,
 } from './dtos/create-account.dto';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
+import {
+  UpdateProfileIntput,
+  UpdateProfileOutput,
+} from './dtos/update-profile.dto';
 import { UserProfileInput, UserProfileOutput } from './dtos/user-profile.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
@@ -65,6 +69,22 @@ export class UsersResolver {
       return {
         error: 'User Not Found',
         ok: false,
+      };
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Mutation((returns) => UpdateProfileOutput)
+  async updateProfile(
+    @AuthUser() authUser: User,
+    @Args('input') updateProfileInput: UpdateProfileIntput,
+  ): Promise<UpdateProfileOutput> {
+    try {
+      await this.usersService.updateProfile(authUser.id, updateProfileInput);
+    } catch (error) {
+      return {
+        ok: false,
+        error,
       };
     }
   }

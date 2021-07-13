@@ -80,7 +80,11 @@ export class UsersResolver {
     @Args('input') updateProfileInput: UpdateProfileIntput,
   ): Promise<UpdateProfileOutput> {
     try {
+      console.log(updateProfileInput);
       await this.usersService.updateProfile(authUser.id, updateProfileInput);
+      return {
+        ok: true,
+      };
     } catch (error) {
       return {
         ok: false,

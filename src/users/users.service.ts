@@ -78,8 +78,17 @@ export class UsersService {
   async updateProfile(
     userId: number,
     { email, password }: UpdateProfileIntput,
-  ) {
-    this.users.update(userId, { email, password });
+  ): Promise<User> {
+    const user = await this.users.findOne(userId);
+    // email이 존재한다면
+    if (email) {
+      user.email = email;
+    }
+    // password가 존재한다면
+    if (password) {
+      user.password = password;
+    }
+    return this.users.save(user);
   }
 }
 

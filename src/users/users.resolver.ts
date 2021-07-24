@@ -12,6 +12,7 @@ import {
   UpdateProfileOutput,
 } from './dtos/update-profile.dto';
 import { UserProfileInput, UserProfileOutput } from './dtos/user-profile.dto';
+import { VerifyEmailInput, VerifyEmailOutput } from './dtos/verify-email.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
@@ -82,6 +83,23 @@ export class UsersResolver {
     try {
       console.log(updateProfileInput);
       await this.usersService.updateProfile(authUser.id, updateProfileInput);
+      return {
+        ok: true,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error,
+      };
+    }
+  }
+
+  @Mutation((returns) => VerifyEmailOutput)
+  async verifyEmail(
+    @Args('input') verifyEmailInput: VerifyEmailInput,
+  ): Promise<VerifyEmailOutput> {
+    try {
+      await this.usersService.verifyEmail(verifyEmailInput.code);
       return {
         ok: true,
       };
